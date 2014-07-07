@@ -8,6 +8,8 @@ block content
         div.name-field
         input#username(name="username", type="text", required, placeholder="Username")
         small.error Name is required and must be a string.
+        input#username(name="sitename", type="text", required, placeholder="sitename (eg: ibrow)")
+        small.error Site name is required and must be a string.
         div.password-field
           small required
           input#api_key(name="api_key", type="password", placeholder="API KEY", required)

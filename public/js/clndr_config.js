@@ -30,9 +30,6 @@ $(document).ready( function() {
     }
   }
 
-  // console.log(issues);
-  console.log(eventArray);
-
   var redoFoundation = function(){
     // For data-equalizer to work:
     $(document).foundation();

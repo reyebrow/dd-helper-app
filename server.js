@@ -30,7 +30,6 @@ app.use(session({
   secureProxy: false // if you do SSL outside of node
 }))
 
-
 // Some Globals
 var consolelog = [];
 var vancouverOffset = 7 * 60 * 60 * 1000;
@@ -98,80 +97,63 @@ var parseIssues = function(data){
 
 }
 
-var getClient = function(session){
-
+var makeAPICall = function(req, res, next){
     // Set up the basic http authentication to get the API stuff
     var options_auth={
-      user: session.session_user.user,
-      password: session.session_user.api_key,
+      user: req.session.session_user.user,
+      password: req.session.session_user.api_key,
       mimetypes:{
           json:["application/json","application/json; charset=utf-8"],
           xml:["application/xml","application/xml; charset=utf-8"]
       } 
     };
     
-    return new Client(options_auth);
-
+    var client = new Client(options_auth);
+    client.get("https://" + req.session.session_user.sitename + ".mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
+      res.APIData = parseIssues(data);
+      next();
+    });
 }
 
 var getAllIssues = function(req, res){
-    getClient(req.session).get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
 
-    var projects = parseIssues(data);
-
-    renderer(res, 'index.jade', projects, "All issues waiting on me");
-
-  });
+    renderer(res, 'index.jade', res.APIData, "All issues waiting on me");
 }
 
 var getCalendarIssues = function(req, res){
-    getClient(req.session).get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
 
-    var projects = parseIssues(data);
-    consolelog.push(projects);
-
-    renderer(res, 'clndr.jade', projects, "My DoneDone Calendar");
-
-  });
+    renderer(res, 'clndr.jade', res.APIData, "My DoneDone Calendar");
 }
 
 var getWeekIssues = function(req, res) {
-  getClient(req.session).get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
-
-    var projects = parseIssues(data);
 
     // Delete anything due after the next saturday
-    for (var i in projects){
-      projects[i].issues = projects[i].issues.filter(function(el){ 
+    for (var i in res.APIData){
+      res.APIData[i].issues = res.APIData[i].issues.filter(function(el){ 
         return el.moment_duedate <= moment().day(7); 
       });
     }
 
-    renderer(res, 'index.jade', projects, "My Week");
+    renderer(res, 'index.jade', res.APIData, "My Week");
 
-  });
 };
 
 var getDayIssues = function(req, res) {
-  getClient(req.session).get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
-
-    var projects = parseIssues(data); 
 
     // Delete anything due after today
-    for (var i in projects){
+    for (var i in res.APIData){
       // Remove null array values
-      projects[i].issues = projects[i].issues.filter(function(el){
+      res.APIData[i].issues = res.APIData[i].issues.filter(function(el){
         return el.moment_duedate <= moment();
       });
     }
-    // Filter out all projects without issues
-    projects = projects.filter(function(el){
+    // Filter out all res.APIData without issues
+    res.APIData = res.APIData.filter(function(el){
       return el.issues.length > 0;
     });
 
-    renderer(res, 'index.jade', projects, "My Day");
+    renderer(res, 'index.jade', res.APIData, "My Day");
 
-  });
 };
 
 var renderer = function (res, template, page, title){
@@ -186,42 +168,48 @@ var renderer = function (res, template, page, title){
 // get an instance of router
 var router = express.Router();
 
-
 // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE
 // you can do this however you want with whatever variables you set up
-function isAuthenticated(req, res, next) {
+router.use(function(req, res, next) {
 
-  var user = req.session.session_user;
-
-  if (req.session.session_user)
-    return next();
-
-  // User not logged in. Send them to the form
-  res.redirect('/login');
-}
+  if (req.session.session_user && validateLogin(req.session.session_user)){
+    return makeAPICall(req, res, next);
+  }
+  else{ 
+    delete req.session.session_user;
+    // User not logged in. Send them to the form
+    res.redirect('/login');
+  }
+});
 
 // The very simple routing we do for this app.
-router.get('/', isAuthenticated, getDayIssues);
-router.get('/week', isAuthenticated, getWeekIssues);
-router.get('/day', isAuthenticated, getDayIssues);
-router.get('/all', isAuthenticated, getAllIssues);
-router.get('/clndr', isAuthenticated, getCalendarIssues);
+router.get('/',       getDayIssues);
+router.get('/week',   getWeekIssues);
+router.get('/day',    getDayIssues);
+router.get('/all',    getAllIssues);
+router.get('/clndr',  getCalendarIssues);
 
+// REally simple thing here. Just make sure there is somehting in all the fields
+var validateLogin = function(keys){
+  if (keys.user && keys.api_key && keys.sitename){
+    return true;
+  }
+  return false;
+}
 
 // The login routes
 app.route('/login')
   // show the form (GET http://localhost:8080/login)
   .get(function(req, res) {
     // User already logged in. Send them to main page
-    
-    console.log(req);
 
-    if (req.session.session_user)
+    if (req.session.session_user && validateLogin(req.session.session_user)){
       res.redirect('/');
+    }
+    else {
+      res.render('login.jade', { title: "Login" });      
+    }
 
-    res.render('login.jade', {
-      title: "Login"
-    });
   })
   // process the form (POST http://localhost:8080/login)
   .post(function(req, res) {
@@ -230,17 +218,15 @@ app.route('/login')
     req.session.session_user = {
       user: req.body.username,
       api_key: req.body.api_key,
+      sitename: req.body.sitename
     }
 
     res.redirect('/');
 
   });
-
-
-router.get('/logout', function(req, res){
-  var timeout = 8 * 60 * 60 * 1000; //(in milliseconds)
-  if (req.body.remember) res.cookie('remember', 1, { maxAge: timeout });
-  delete req.session.session_user
+app.get('/logout', function(req, res){
+  delete req.session.session_user;
+  res.redirect('/login');
 });
 
 // apply the routes to our application
