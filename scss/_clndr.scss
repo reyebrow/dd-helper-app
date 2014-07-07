@@ -106,6 +106,6 @@ $weekend-blue: #eef;
 
 @for $i from 1 through 10 {
   a.proj-num-#{$i}, label.proj-num-#{$i}{
-    background: adjust-hue(#977, ( $i * 30deg));
+    background: adjust-hue(#A33, ( $i * 30deg));
   }
 }
