@@ -162,5 +162,6 @@ module.exports = function(grunt) {
   grunt.registerTask('dev', [ 'concurrent:dev' ]);
   grunt.registerTask('devlight', [ 'concurrent:devlight' ]);
   grunt.registerTask('build', [ 'concat', 'compass:dist' ]);
-  grunt.registerTask('heroku', ['start', 'build']);
+  grunt.registerTask('heroku:development', ['start', 'build']);
+  grunt.registerTask('heroku:production', ['start', 'build']);
 };
