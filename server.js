@@ -67,14 +67,15 @@ var parseIssues = function(data){
   for (var issue in data.issues) {
 
     // Sort out the timestamp business
-    var timestamp = parseInt(data.issues[issue].due_date.match(/[0-9]+/g));
-
-    data.issues[issue].moment_duedate = moment(timestamp).add('hours', 7);
-
-    data.issues[issue].overdue = false;
-    if ( data.issues[issue].moment_duedate < moment() ) {
-      data.issues[issue].overdue = true;
+    var timestamp = data.issues[issue].due_date != null ? parseInt(data.issues[issue].due_date.match(/[0-9]+/g)) : "";
+    if (timestamp !== ""){
+      data.issues[issue].moment_duedate = moment(timestamp).add('hours', 7);
+      data.issues[issue].overdue = false;
+      if ( data.issues[issue].moment_duedate < moment() ) {
+        data.issues[issue].overdue = true;
+      }
     }
+
     data.issues[issue].url = "https://ibrow.mydonedone.com/issuetracker/projects/" + data.issues[issue].project.id + "/issues/" + data.issues[issue].order_number;
     
     var projectfound = false;
