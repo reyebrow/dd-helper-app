@@ -15,6 +15,9 @@ bower install
 npm start
 ```
 
+## Deploying to heroku
+
+After reading [this](https://medium.com/@3runjo/how-to-deploy-a-grunt-project-on-heroku-c227cb1ddc56) I installed the [heroku buildpack for grunt compass](https://github.com/stephanmelzer/heroku-buildpack-nodejs-grunt-compass)
 
 ## Features that could be implemented:
 

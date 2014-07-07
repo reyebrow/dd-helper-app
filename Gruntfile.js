@@ -12,14 +12,6 @@ module.exports = function(grunt) {
       }
     },
 
-    // Set environment variables
-    // ======================================================
-    env: {
-        test: { NODE_ENV: 'test' },
-        dev: { NODE_ENV: 'development' },
-        prod: { NODE_ENV: 'production'  }
-    },
-
     // Copy all bower files into the public area
     // ======================================================
     copy: {
@@ -159,9 +151,8 @@ module.exports = function(grunt) {
   // Define grunt tasks
   grunt.registerTask('default', ['start', 'build' ]);
   grunt.registerTask('start', ['copy:fonts', 'copy:js', 'uglify:bowerlibs']);
-  grunt.registerTask('dev', [ 'concurrent:dev' ]);
-  grunt.registerTask('devlight', [ 'concurrent:devlight' ]);
   grunt.registerTask('build', [ 'concat', 'compass:dist' ]);
+  grunt.registerTask('dev', [ 'concurrent:dev' ]);
   grunt.registerTask('heroku:development', ['start', 'build']);
   grunt.registerTask('heroku:production', ['start', 'build']);
 };
