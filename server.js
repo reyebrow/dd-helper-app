@@ -4,11 +4,9 @@ var morgan         = require('morgan');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 var cookieParser   = require('cookie-parser');
-var expressSession = require('express-session');
 var Client         = require('node-rest-client').Client;
 var app            = express();
-var session        = require('express-session');
-var RedisStore     = require('connect-redis')(session);
+var session        = require('cookie-session');
 var moment         = require('moment');
 var logfmt         = require("logfmt");
 
@@ -24,22 +22,19 @@ if ('development' == env) {
    // configure stuff here
 }
 
-app.use(cookieParser('something secret'));
-app.use(expressSession({secret:'somesecrettokenhere'}));
-
-options_redis = {
-  host:'127.0.0.1',
-  port:6380,
-  prefix:'sess'
-};
-
-var consolelog = [];
-
-var vancouverOffset = 7 * 60 * 60 * 1000;
-
-app.use(session({ store: new RedisStore(options_redis), secret: 'keyboard cat something something' })); // Session store for keeping the API key hidden
+app.use(cookieParser());
 
 // Initializa our session store
+app.use(session({
+  keys: ['key1blasdfgdfgsrgwergwergsergaerg', 'key2shtwrthergwrthqeargsrthgwaer'],
+  secureProxy: false // if you do SSL outside of node
+}))
+
+
+// Some Globals
+var consolelog = [];
+var vancouverOffset = 7 * 60 * 60 * 1000;
+
 Date.prototype.getDayName = function() {
   var d = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   return d[this.getDay()];
@@ -103,8 +98,24 @@ var parseIssues = function(data){
 
 }
 
+var getClient = function(session){
+
+    // Set up the basic http authentication to get the API stuff
+    var options_auth={
+      user: session.session_user.user,
+      password: session.session_user.api_key,
+      mimetypes:{
+          json:["application/json","application/json; charset=utf-8"],
+          xml:["application/xml","application/xml; charset=utf-8"]
+      } 
+    };
+    
+    return new Client(options_auth);
+
+}
+
 var getAllIssues = function(req, res){
-    client.get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
+    getClient(req.session).get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
 
     var projects = parseIssues(data);
 
@@ -114,7 +125,7 @@ var getAllIssues = function(req, res){
 }
 
 var getCalendarIssues = function(req, res){
-    client.get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
+    getClient(req.session).get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
 
     var projects = parseIssues(data);
     consolelog.push(projects);
@@ -125,7 +136,7 @@ var getCalendarIssues = function(req, res){
 }
 
 var getWeekIssues = function(req, res) {
-  client.get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
+  getClient(req.session).get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
 
     var projects = parseIssues(data);
 
@@ -142,7 +153,7 @@ var getWeekIssues = function(req, res) {
 };
 
 var getDayIssues = function(req, res) {
-  client.get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
+  getClient(req.session).get("https://ibrow.mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
 
     var projects = parseIssues(data); 
 
@@ -180,6 +191,8 @@ var router = express.Router();
 // you can do this however you want with whatever variables you set up
 function isAuthenticated(req, res, next) {
 
+  var user = req.session.session_user;
+
   if (req.session.session_user)
     return next();
 
@@ -200,6 +213,9 @@ app.route('/login')
   // show the form (GET http://localhost:8080/login)
   .get(function(req, res) {
     // User already logged in. Send them to main page
+    
+    console.log(req);
+
     if (req.session.session_user)
       res.redirect('/');
 
@@ -211,24 +227,13 @@ app.route('/login')
   .post(function(req, res) {
     console.log('processing');
 
-    console.log(req.body);
     req.session.session_user = {
       user: req.body.username,
       api_key: req.body.api_key,
     }
 
-    // Set up the basic http authentication to get the API stuff
-    var options_auth={
-      user: req.session.session_user.user,
-      password: req.session.session_user.api_key,
-      mimetypes:{
-          json:["application/json","application/json; charset=utf-8"],
-          xml:["application/xml","application/xml; charset=utf-8"]
-      } 
-    };
-    
-    client = new Client(options_auth);
     res.redirect('/');
+
   });
 
 
@@ -245,4 +250,3 @@ var port = Number(process.env.PORT || 3000);
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
-
