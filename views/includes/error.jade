@@ -1,0 +1,4 @@
+if msgs
+  each msg, i in msgs
+    div(data-alert, class="alert-box radius #{error.severity}") #{msg.text}
+    a.close(href="#") &times;

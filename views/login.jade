@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  
+  div.row
+    div.columns.centered.large-6.small-12
+      form(data-abide, action="/login", method="post")
+        div.name-field
+        input#username(name="username", type="text", required, placeholder="Username")
+        small.error Name is required and must be a string.
+        div.password-field
+          small required
+          input#api_key(name="api_key", type="password", placeholder="API KEY", required)
+          small.error A Password is required.
+        button.small.round(type="submit") Submit

@@ -1,0 +1,111 @@
+$clndr-border: #aaa;
+$header-bg: #000;
+$weekend-blue: #eef;
+
+.large-seventh { width: (100% / 7); }
+
+.small-seventh {
+  width: (100% / 7);
+}
+
+.calendar {
+  margin: 30px auto;
+  max-width: 100%;
+  font-size: 14px;
+  .clndr{
+
+    .clndr-grid {
+      border-bottom: 1px solid $clndr-border;
+
+     .days-of-the-week {
+        .header-day {
+          vertical-align: middle;
+          text-align: center;
+          height: 30px;
+          font-size: 10px;
+          background: $header-bg;
+          border-left: 1px solid darken($header-bg, 5%);
+          border-top: 1px solid darken($header-bg, 5%);
+          color: #fff;
+          &:last-child {
+            border-right: 1px solid darken($header-bg, 5%);
+          }
+        }
+      }
+      .days {
+          .columns { 
+            padding: 0;
+            border-left: 1px solid $clndr-border;
+            border-top: 1px solid $clndr-border;            
+          }
+          .columns:last-child {
+            border-right: 1px solid $clndr-border;
+          }
+
+          .day {
+            height: inherit;
+            min-height: 50px;
+            padding: 2px;
+            a { 
+              clear: both;
+              font-size: 10px;
+              text-align: left;
+              padding: 2px;
+              font-weight: normal;
+              margin-bottom: 2px;
+            }
+            &.calendar-dow-0,
+            &.calendar-dow-6 { background: $weekend-blue;}
+          }
+          .day:hover {background: #eee; }
+          .day.today {background: #9AD6E3; }
+          .day.today:hover {background: #72c6d8; }
+          // .day.today.event { background: #a7dbc1; }
+          // .day.event { background: #B4E09F; }
+          // .day.event:hover { background: #96d478; }
+          .day.inactive {background: #ddd; }
+
+          .day .number {
+            box-sizing: border-box;
+            padding: 1px;
+            font-size: 12px;
+            text-align: right;
+          }
+          .empty,
+          .adjacent-month {
+            // border-left: 1px solid $clndr-border;
+            // border-top: 1px solid $clndr-border;
+            // height: inherit;
+            background: #eee;
+          }
+          .empty:hover,
+          .adjacent-month:hover {
+            background: #ddd;
+          }
+          .empty:last-child,
+          .adjacent-month:last-child {
+            // border-right: 1px solid #000000;
+          }
+          .row:last-child .day {
+            // border-bottom: 1px solid #000000;
+          }
+          .row:last-child .empty {
+            // border-bottom: 1px solid #000000;
+          }
+
+
+      }
+
+
+    }
+
+
+  }
+}
+
+
+@for $i from 1 through 10 {
+  a.proj-num-#{$i}, label.proj-num-#{$i}{
+    background: adjust-hue(#977, ( $i * 30deg));
+  }
+}

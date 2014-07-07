@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  // Wrapper
+  #wrapper
+
+    // USER LIST
+    h1 #{title}
+
+    div.projects
+    each project, i in page
+      div.project
+        strong.project-name #{project.name}    
+        each issue, i in project.issues
+          div(class="issue collapse row #{issue.overdue ? 'overdue' : ''}")
+            div.columns.small-1
+              a.number(target="blank", href="#{issue.url}") #{issue.order_number}
+            div.columns.small-2 #{issue.moment_duedate.calendar().replace(/ at .*/g, "") }
+            div.columns.small-9
+              a.title(target="blank", href="#{issue.url}") #{issue.title}

@@ -1,0 +1,64 @@
+extends layout
+
+block content
+  // Wrapper
+  #wrapper
+
+    h1 #{title}
+    
+    div.row
+      div.columns.large12
+        ul.large-block-grid-5
+          each project, i in page
+            li
+              label(class="label round proj-num-#{i+1}") #{project.name}
+
+    div.calendar
+      script(type="text/template", id="clndr-template").
+        <div class="button-bar">
+          <ul class="clndr-controls button-group round">
+            <li><a href="#" class="clndr-previous-button tiny button">&lsaquo;</a></li>
+            <li><a href="#" class="month tiny button"><%= month %></a></li>
+            <li><a href="#" class="clndr-next-button tiny button">&rsaquo;</a></li>
+          </ul>
+          <ul class="clndr-controls button-group radius right">
+            <li><a href="#" class="clndr-today-button tiny button">Today</a></li>
+          </ul>
+        </div>
+        <div class="clndr-grid">
+          <div class="days-of-the-week row collapse">
+            <% _.each(moment.weekdays(), function(day) { %>
+              <div class="header-day columns small-seventh"><%= day %></div>
+            <% }); %>
+          </div>
+            <% _.each(days, function(day) { %>
+              <% console.log(day.date.date()); %>
+              <% if (day.date.day() == 0 ) { %>
+                <div class="days row collapse" data-equalizer>
+              <% } %>
+              <div class="columns small-seventh" id="<%= day.id %>">
+                <div class="<%= day.classes %> day" data-equalizer-watch >
+                  <div class="number"><%= day.day %></div>
+                  <div class="event-container">
+                    <% _.each(day.events, function(event) { %>
+                      <%= event.rendered %>
+                    <% }); %>
+                </div>
+                </div>
+              </div>
+              <% if (day.date.day() == 6 ) { %>
+                </div>
+              <% } %>
+            <% }); %>
+        </div>
+
+
+
+block scripts
+
+  //- We've got to get our list of events into 
+  script(type='text/javascript').
+    // Pass as regular array here
+    var projects = !{JSON.stringify(page)};
+  
+  script(src='/js/clndr_config.js')

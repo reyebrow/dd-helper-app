@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/css/app.css')
+  body
+    include includes/nav
+    div.row#content
+      include includes/error
+      block content
+    div.row#footer
+      div.columns.small-12
+        p.small Copyright © 2014 Raised Eyebrow
+        
+    script(src='/js/_vendor.js')
+    script(src='/js/app.js')
+    block scripts
+
+    script(type='text/javascript').
+      if (typeof log !== 'undefined') {
+         console.log(log);
+      }

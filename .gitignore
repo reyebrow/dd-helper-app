@@ -1,0 +1,6 @@
+# The following get compiled so we don't commit them
+node_modules
+bower_components
+
+# The following are temporary files and should not be committed
+.sass-cache
