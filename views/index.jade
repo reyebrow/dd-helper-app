@@ -15,6 +15,6 @@ block content
           div(class="issue collapse row #{issue.overdue ? 'overdue' : ''}")
             div.columns.small-1
               a.number(target="blank", href="#{issue.url}") #{issue.order_number}
-            div.columns.small-2 #{issue.moment_duedate.calendar().replace(/ at .*/g, "") }
+            div.columns.small-2 #{issue.calDate}
             div.columns.small-9
               a.title(target="blank", href="#{issue.url}") #{issue.title}

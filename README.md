@@ -19,6 +19,12 @@ npm start
 
 After reading [this](https://medium.com/@3runjo/how-to-deploy-a-grunt-project-on-heroku-c227cb1ddc56) I installed the [heroku buildpack for grunt compass](https://github.com/stephanmelzer/heroku-buildpack-nodejs-grunt-compass)
 
+Also don't forget to set the UTF8 as a default:
+
+```
+heroku config:add LANG=en_US.UTF-8
+```
+
 ## Features that could be implemented:
 
 1. Drag to change date on Calendar view. This could really help us and our project managers get organized quickly. Rejigging ticket dates en-mass is a bit tedious in DoneDone right now. 
