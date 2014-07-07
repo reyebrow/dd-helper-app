@@ -158,8 +158,9 @@ module.exports = function(grunt) {
 
   // Define grunt tasks
   grunt.registerTask('default', ['start', 'build' ]);
-  grunt.registerTask('start', ['copy:fonts', 'copy:js', 'copy:icons', 'uglify:bowerlibs']);
+  grunt.registerTask('start', ['copy:fonts', 'copy:js', 'uglify:bowerlibs']);
   grunt.registerTask('dev', [ 'concurrent:dev' ]);
   grunt.registerTask('devlight', [ 'concurrent:devlight' ]);
   grunt.registerTask('build', [ 'concat', 'compass:dist' ]);
+  grunt.registerTask('heroku', ['start', 'build']);
 };
