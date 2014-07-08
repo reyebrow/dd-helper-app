@@ -67,7 +67,7 @@ var parseIssues = function(data){
     data.issues[issue].overdue = false;
 
     if (timestamp !== ""){
-      data.issues[issue].moment_duedate = moment(timestamp).add('hours', 7);
+      data.issues[issue].moment_duedate = moment(timestamp).add('days', 1);
       data.issues[issue].overdue = false;
       if ( data.issues[issue].moment_duedate < moment() ) {
         data.issues[issue].overdue = true;
@@ -144,7 +144,7 @@ var getDayIssues = function(req, res) {
     for (var i in res.APIData){
       // Remove null array values
       res.APIData[i].issues = res.APIData[i].issues.filter(function(el){
-        return el.moment_duedate <= moment();
+        return el.moment_duedate <= moment().hours(18);
       });
     }
     // Filter out all res.APIData without issues
