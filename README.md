@@ -10,10 +10,18 @@ Our team at work recently migrated our issue tracking to [DoneDone](http://www.g
 This app is fairly easy to install and deploy to Heroku.
 
 ```
-npm install
-bower install
-npm start
+$ npm install
+$ bower install
+$ grunt
+$ npm start
 ```
+
+## Theming
+
+* `scss` folder has styles
+* `views` is where to find html (jade templates)
+
+Make sure to run `grunt` before doing anything.
 
 ## Deploying to heroku
 
