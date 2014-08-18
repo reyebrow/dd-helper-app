@@ -23,7 +23,7 @@ $(document).ready( function() {
         startDate: myevent.moment_duedate,
         endDate: myevent.moment_duedate,
         title: myevent.title,
-        rendered: '<a class="tiny radius button proj-num-' + projNum + '" target="_blank" href="' + myevent.url + '" >' + myevent.title + '</a>',
+        rendered: '<a class="ticket proj-num-' + projNum + '" target="_blank" href="' + myevent.url + '" >' + myevent.title + '</a>',
         project: myevent.project.name
       });
 
@@ -75,8 +75,6 @@ $(document).ready( function() {
 
 
 });
-
-
 
 
 

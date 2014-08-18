@@ -9,12 +9,24 @@ block content
 
     div.projects
     each project, i in page
-      div.project
-        strong.project-name #{project.name}    
+      div(class="project project-#{i+1}")
+        h3.project-name #{project.name}    
         each issue, i in project.issues
-          div(class="issue collapse row #{issue.overdue ? 'overdue' : ''}")
-            div.columns.small-1
-              a.number(target="blank", href="#{issue.url}") #{issue.order_number}
-            div.columns.small-2 #{issue.calDate}
-            div.columns.small-9
-              a.title(target="blank", href="#{issue.url}") #{issue.title}
+          div(class="issue #{issue.overdue ? 'overdue' : ''}")
+            div.row.collapse.hide-for-small
+              div.columns.small-2 
+                span #{issue.calDate}
+              div.columns.small-9
+                a.title(target="blank", href="#{issue.url}") #{issue.title}
+              div.columns.small-1.text-right
+                a.number(target="blank", href="#{issue.url}") ##{issue.order_number}
+            //- MOBILE TIME
+            div.show-for-small
+              div.row.collapse
+                div.columns.small-6
+                  span #{issue.calDate}
+                div.columns.small-6.text-right
+                  a.number.small.round.label(target="blank", href="#{issue.url}") ##{issue.order_number}
+              div.row.collapse
+                div.columns.small-12
+                  a.title(target="blank", href="#{issue.url}") #{issue.title}

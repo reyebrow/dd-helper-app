@@ -46,13 +46,24 @@ $weekend-blue: #eef;
             height: inherit;
             min-height: 50px;
             padding: 2px;
-            a { 
+            a.ticket { 
               clear: both;
               font-size: 10px;
               text-align: left;
               padding: 2px;
               font-weight: normal;
+              display: block;
+              @extend .button, .tiny, .radius;
               margin-bottom: 2px;
+            }
+            a.daycount{
+              text-align: center;
+              display: block;
+              font-size: 16px;
+              color: white;
+              padding: 2px;
+              background: $orange;
+              @include border-radius(1000px); 
             }
             &.calendar-dow-0,
             &.calendar-dow-6 { background: $weekend-blue;}
@@ -92,20 +103,28 @@ $weekend-blue: #eef;
           .row:last-child .empty {
             // border-bottom: 1px solid #000000;
           }
-
-
       }
+    }
+  }
+}
 
+
+
+// The overlay has theming too. 
+.reveal-modal{
+  h2{ text-align: center; }
+  width: 80vw;
+  left: 10vw;
+  padding: 0;
+  min-height: 0px;
+  top: 5vw!important;
+  a{
+    display: block;
+    @extend .button;
+    margin: 0;
+    &:nth-child(even){
 
     }
-
-
   }
 }
 
-
-@for $i from 1 through 10 {
-  a.proj-num-#{$i}, label.proj-num-#{$i}{
-    background: adjust-hue(#A33, ( $i * 30deg));
-  }
-}

@@ -25,6 +25,15 @@ Also don't forget to set the UTF8 as a default:
 heroku config:add LANG=en_US.UTF-8
 ```
 
+Then deploy as follows: 
+
+```
+$ git remote add heroku git@heroku.com:dd-helper.git
+$ git fetch heroku
+$ git push heroku
+```
+
+
 ## Features that could be implemented:
 
 1. Drag to change date on Calendar view. This could really help us and our project managers get organized quickly. Rejigging ticket dates en-mass is a bit tedious in DoneDone right now. 

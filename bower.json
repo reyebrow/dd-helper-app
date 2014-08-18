@@ -15,9 +15,9 @@
   ],
   "dependencies": {
     "foundation": "~5.3.0",
-    "foundation-icon-fonts": "*",
     "clndr": "~1.2.0",
     "moment": "~2.7.0",
-    "underscore": "~1.6.0"
+    "underscore": "~1.6.0",
+    "ionicons": "~1.5.2"
   }
 }

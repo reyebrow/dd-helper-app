@@ -96,7 +96,7 @@ var parseIssues = function(data){
   return projects;
 
 }
-
+var baseurl = "";
 var makeAPICall = function(req, res, next){
     // Set up the basic http authentication to get the API stuff
     var options_auth={
@@ -107,7 +107,7 @@ var makeAPICall = function(req, res, next){
           xml:["application/xml","application/xml; charset=utf-8"]
       } 
     };
-    
+    baseurl = "http://" + req.session.session_user.sitename + ".mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json";
     var client = new Client(options_auth);
     client.get("https://" + req.session.session_user.sitename + ".mydonedone.com/issuetracker/api/v2/issues/waiting_on_you.json", function(data, response){
       res.APIData = parseIssues(data);
@@ -117,12 +117,12 @@ var makeAPICall = function(req, res, next){
 
 var getAllIssues = function(req, res){
 
-    renderer(res, 'index.jade', res.APIData, "All issues waiting on me");
+    renderer(res, 'index.jade', res.APIData, "All issues waiting on me", "everything");
 }
 
 var getCalendarIssues = function(req, res){
 
-    renderer(res, 'clndr.jade', res.APIData, "My DoneDone Calendar");
+    renderer(res, 'clndr.jade', res.APIData, "My DoneDone Calendar", "calendar");
 }
 
 var getWeekIssues = function(req, res) {
@@ -134,7 +134,7 @@ var getWeekIssues = function(req, res) {
       });
     }
 
-    renderer(res, 'index.jade', res.APIData, "My Week");
+    renderer(res, 'index.jade', res.APIData, "My Week", "week");
 
 };
 
@@ -152,15 +152,17 @@ var getDayIssues = function(req, res) {
       return el.issues.length > 0;
     });
 
-    renderer(res, 'index.jade', res.APIData, "My Day");
+    renderer(res, 'index.jade', res.APIData, "My Day", "day");
 
 };
 
-var renderer = function (res, template, page, title){
+var renderer = function (res, template, page, title, menu){
   res.render(template, {
       page: page,
+      menu: menu,
       log: consolelog,
-      title: title
+      title: title,
+      baseurl: baseurl
   });
   log = [];
 }

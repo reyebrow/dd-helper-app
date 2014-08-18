@@ -28,7 +28,7 @@ module.exports = function(grunt) {
       },
       fonts: {
         files: [
-          { expand:true, cwd:'bower_components/foundation-icon-fonts/', src:'foundation-icons.*', dest: 'public/fonts/' }
+          { expand:true, cwd:'bower_components/ionicons/fonts/', src:'ionicons.*', dest: 'public/fonts/' }
         ],
       },
       icons: {
@@ -87,7 +87,7 @@ module.exports = function(grunt) {
         relativeAssets: true,
         importPath: [
           'bower_components/foundation/scss',
-          'bower_components/foundation-icon-fonts',
+          'bower_components/ionicons/scss',
         ],
       },
       dist: {

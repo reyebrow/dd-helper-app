@@ -5,6 +5,8 @@ $(document).ready( function() {
     patterns: {
     password: /^(?=.*\d).{4,8}$/, 
     }
-  })
+  });
+
+  $(this).foundation();
 });
 

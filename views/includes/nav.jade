@@ -1,4 +1,4 @@
-div
+div.hide-for-small
   nav.top-bar(data-topbar)
     ul.title-area
       li.name
@@ -9,14 +9,33 @@ div
           span Menu
     section.top-bar-section
       ul.left
-        li
-          a(href="/day") Day
-        li
-          a(href="/week") Week
-        li
-          a(href="/all") All
-        li
-          a(href="/clndr") Calendar
+        li(class=menu==="day"?"active":"")
+          a(href="/day").ion-android-clock Day
+        li(class=menu==="week"?"active":"")
+          a(href="/week").ion-ios7-bookmarks-outline Week
+        li(class=menu==="everything"?"active":"")
+          a(href="/all").ion-asterisk Everything
+        li(class=menu==="calendar"?"active":"")
+          a(href="/clndr").ion-android-calendar Calendar
       ul.right
         li
-          a(href="/logout") Log Out
+          a(href="/logout").ion-log-out Log Out
+
+//- And now the mobile menu
+nav.show-for-small
+  ul#mobile-nav.small-block-grid-5
+    li(class=menu==="day"?"active":"")
+      a(href="/day").ion-android-clock
+        span Day
+    li(class=menu==="week"?"active":"")
+      a(href="/week").ion-ios7-bookmarks-outline
+        span Week
+    li(class=menu==="everything"?"active":"")
+      a(href="/all").ion-asterisk
+        span Everything
+    li(class=menu==="calendar"?"active":"")
+      a(href="/clndr").ion-android-calendar
+        span Calendar
+    li
+      a(href="/logout").ion-log-out
+        span Log out
