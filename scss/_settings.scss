@@ -17,7 +17,7 @@ $experimental: true;
 $pink: #ed0c6d;
 $orange: #ff8300;
 $clndr_borders: 1px solid white;
-$clndr-header-bg: $orange;
+$clndr-header-bg: darken($orange, 10%);
 $weekday-bg: #efefef;
 $weekend-bg: lighten($orange, 40%);
 $prev-month-bg: #ddd;

@@ -4,6 +4,34 @@
   width: (100% / 7);
 }
 
+#calendar-controls {
+  .columns { 
+    background: #eee;
+    min-height: 44px;
+    border-top: 1px solid #ccc;
+    vertical-align: middle;
+  }
+  a.arrow:before{
+    border: 1px solid darken(#aaa, 5%);
+    @include border-radius(100px);
+    background: #aaa;
+    color: white;
+    display: inline-block;
+    height: 25px; width: 25px;
+    font-size: 19px;
+    line-height: 22px;
+    vertical-align: middle;
+  }
+  a.month{
+    font-size: 28px;
+    color: #888;
+    font-family: Raleway;
+    font-weight: normal;
+    vertical-align: bottom;
+  }
+  a.button{ margin-bottom: 0; }
+}
+
 .calendar {
   margin: 30px auto;
   max-width: 100%;

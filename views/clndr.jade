@@ -14,15 +14,15 @@ block content
               label(class="label round proj-num-#{i+1}") #{project.name}
     div.calendar
       script(type="text/template", id="clndr-template").
-        <div class="button-bar">
-          <ul class="clndr-controls button-group round">
-            <li><a href="#" class="clndr-previous-button tiny button ion-arrow-left-a">&nbsp;</a></li>
-            <li><a href="#" class="month tiny button"><%= month %></a></li>
-            <li><a href="#" class="clndr-next-button tiny button ion-arrow-right-a">&nbsp;</a></li>
-          </ul>
-          <ul class="clndr-controls button-group round right">
-            <li><a href="#" class="clndr-today-button tiny button">Today</a></li>
-          </ul>
+        <div id="calendar-controls" class="row collapse">
+          <div class="columns large-10 small-7 text-center">
+            <a href="#" class="clndr-previous-button arrow ion-arrow-left-a">&nbsp;</a>
+            <a href="#" class="month"><%= month %></a>
+            <a href="#" class="clndr-next-button arrow ion-arrow-right-a">&nbsp;</a>
+          </div>
+          <div class="columns large-2 small-5 text-right">
+            <a href="#" class="clndr-today-button button small">Today</a>
+          </div>
         </div>
         <div class="clndr-grid">
           <div class="days-of-the-week row collapse">
