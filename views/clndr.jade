@@ -27,14 +27,16 @@ block content
         <div class="clndr-grid">
           <div class="days-of-the-week row collapse">
             <% _.each(moment.weekdays(), function(day) { %>
-              <div class="header-day columns small-seventh"><%= day %></div>
+              <div class="header-day columns small-seventh">
+                <span class="hide-for-small"><%= day %></span>
+                <span class="show-for-small"><%= day.substring(0,1) %></span>
+              </div>
             <% }); %>
           </div>
             <% _.each(days, function(day) { %>
               <% if (day.date.day() == 0 ) { %>
                 <div class="days row collapse" data-equalizer>
               <% } %>
-              <% console.log(day) %>
               <div class="columns small-seventh" id="<%= day.id %>">
                 <div class="<%= day.classes %> day" data-equalizer-watch >
                   <div class="number"><%= day.day %></div>

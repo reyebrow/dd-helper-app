@@ -14,9 +14,14 @@ $rem-base: 16px;
 
 $experimental: true;
 
-
 $pink: #ed0c6d;
 $orange: #ff8300;
+$clndr_borders: 1px solid white;
+$clndr-header-bg: $orange;
+$weekday-bg: #efefef;
+$weekend-bg: lighten($orange, 40%);
+$prev-month-bg: #ddd;
+$today-bg: lighten(#9AD6E3, 10%);
 
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
 // for compatibility with browser-based text zoom or user-set defaults.

@@ -1,7 +1,3 @@
-$clndr-border: #aaa;
-$header-bg: #000;
-$weekend-blue: #eef;
-
 .large-seventh { width: (100% / 7); }
 
 .small-seventh {
@@ -15,37 +11,38 @@ $weekend-blue: #eef;
   .clndr{
 
     .clndr-grid {
-      border-bottom: 1px solid $clndr-border;
+      border-bottom: $clndr_borders;
 
      .days-of-the-week {
         .header-day {
           vertical-align: middle;
           text-align: center;
           height: 30px;
-          font-size: 10px;
-          background: $header-bg;
-          border-left: 1px solid darken($header-bg, 5%);
-          border-top: 1px solid darken($header-bg, 5%);
+          font-size: 12px;
+          background: $clndr-header-bg;
+          border-left: 2px solid $clndr-header-bg;
+          border-top: 2px solid $clndr-header-bg;
           color: #fff;
           &:last-child {
-            border-right: 1px solid darken($header-bg, 5%);
+            border-right: $clndr_borders;
           }
         }
       }
       .days {
           .columns { 
             padding: 0;
-            border-left: 1px solid $clndr-border;
-            border-top: 1px solid $clndr-border;            
+            border-left: $clndr_borders;
+            border-top: $clndr_borders;            
           }
           .columns:last-child {
-            border-right: 1px solid $clndr-border;
+            border-right: $clndr_borders;
           }
 
           .day {
             height: inherit;
             min-height: 50px;
             padding: 2px;
+            background: $weekday-bg;
             a.ticket { 
               clear: both;
               font-size: 10px;
@@ -66,10 +63,10 @@ $weekend-blue: #eef;
               @include border-radius(1000px); 
             }
             &.calendar-dow-0,
-            &.calendar-dow-6 { background: $weekend-blue;}
+            &.calendar-dow-6 { background: $weekend-bg;}
           }
           .day:hover {background: #eee; }
-          .day.today {background: #9AD6E3; }
+          .day.today {background: $today-bg; border: 1px solid darken($today-bg, 15%); }
           .day.today:hover {background: #72c6d8; }
           // .day.today.event { background: #a7dbc1; }
           // .day.event { background: #B4E09F; }
@@ -83,16 +80,9 @@ $weekend-blue: #eef;
             text-align: right;
           }
           .empty,
-          .adjacent-month {
-            // border-left: 1px solid $clndr-border;
-            // border-top: 1px solid $clndr-border;
-            // height: inherit;
-            background: #eee;
-          }
+          .adjacent-month { background: $prev-month-bg; }
           .empty:hover,
-          .adjacent-month:hover {
-            background: #ddd;
-          }
+          .adjacent-month:hover { background: #ddd; }
           .empty:last-child,
           .adjacent-month:last-child {
             // border-right: 1px solid #000000;
